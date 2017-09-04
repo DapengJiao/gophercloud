@@ -14,6 +14,8 @@ import (
 const (
 	v20 = "v2.0"
 	v30 = "v3.0"
+	v37 = "v3.7"
+	v38 = "v3.8"
 )
 
 /*
@@ -94,6 +96,8 @@ func Authenticate(client *gophercloud.ProviderClient, options gophercloud.AuthOp
 	versions := []*utils.Version{
 		{ID: v20, Priority: 20, Suffix: "/v2.0/"},
 		{ID: v30, Priority: 30, Suffix: "/v3/"},
+		{ID: v37, Priority: 37, Suffix: "/v3/"},
+		{ID: v38, Priority: 38, Suffix: "/v3/"},
 	}
 
 	chosen, endpoint, err := utils.ChooseVersion(client, versions)
@@ -104,7 +108,7 @@ func Authenticate(client *gophercloud.ProviderClient, options gophercloud.AuthOp
 	switch chosen.ID {
 	case v20:
 		return v2auth(client, endpoint, options, gophercloud.EndpointOpts{})
-	case v30:
+	case v30, v37, v38:
 		return v3auth(client, endpoint, &options, gophercloud.EndpointOpts{})
 	default:
 		// The switch statement must be out of date from the versions list.

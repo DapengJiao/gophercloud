@@ -25,6 +25,15 @@ type Flavor struct {
 	// Contains 0 if the ID is not an integer.
 	ID int `json:"id"`
 
+	// The number of virtual CPUs for the flavor.
+	VCPUs int `json:"vcpus"`
+
+	// The disk capacity for the flavor.
+	Disk int `json:"disk"`
+
+	// The ephemeral disk capacity for the flavor.
+	Ephemeral int `json:"ephemeral"`
+
 	// The RAM capacity for the flavor.
 	RAM int `json:"ram"`
 

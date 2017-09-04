@@ -63,8 +63,8 @@ func (r *ListedStack) UnmarshalJSON(b []byte) error {
 	type tmp ListedStack
 	var s struct {
 		tmp
-		CreationTime gophercloud.JSONRFC3339NoZ `json:"creation_time"`
-		UpdatedTime  gophercloud.JSONRFC3339NoZ `json:"updated_time"`
+		CreationTime gophercloud.JSONRFC3339 `json:"creation_time"`
+		UpdatedTime  gophercloud.JSONRFC3339 `json:"updated_time"`
 	}
 	err := json.Unmarshal(b, &s)
 	if err != nil {
@@ -112,8 +112,8 @@ func (r *RetrievedStack) UnmarshalJSON(b []byte) error {
 	type tmp RetrievedStack
 	var s struct {
 		tmp
-		CreationTime gophercloud.JSONRFC3339NoZ `json:"creation_time"`
-		UpdatedTime  gophercloud.JSONRFC3339NoZ `json:"updated_time"`
+		CreationTime gophercloud.JSONRFC3339 `json:"creation_time"`
+		UpdatedTime  gophercloud.JSONRFC3339 `json:"updated_time"`
 	}
 	err := json.Unmarshal(b, &s)
 	if err != nil {
@@ -173,8 +173,8 @@ func (r *PreviewedStack) UnmarshalJSON(b []byte) error {
 	type tmp PreviewedStack
 	var s struct {
 		tmp
-		CreationTime gophercloud.JSONRFC3339NoZ `json:"creation_time"`
-		UpdatedTime  gophercloud.JSONRFC3339NoZ `json:"updated_time"`
+		CreationTime gophercloud.JSONRFC3339 `json:"creation_time"`
+		UpdatedTime  gophercloud.JSONRFC3339 `json:"updated_time"`
 	}
 	err := json.Unmarshal(b, &s)
 	if err != nil {

@@ -324,6 +324,7 @@ func (jt *JSONUnix) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// This is original from gophercloud
 // RFC3339NoZ is the time format used in Heat (Orchestration).
 const RFC3339NoZ = "2006-01-02T15:04:05"
 
@@ -342,6 +343,28 @@ func (jt *JSONRFC3339NoZ) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*jt = JSONRFC3339NoZ(t)
+	return nil
+}
+
+// This is modified and used by ECAP-API repo
+// RFC3339 is the time format used in Heat (Orchestration).
+const RFC3339 = "2006-01-02T15:04:05Z"
+
+type JSONRFC3339 time.Time
+
+func (jt *JSONRFC3339) UnmarshalJSON(data []byte) error {
+	var s string
+	if err := json.Unmarshal(data, &s); err != nil {
+		return err
+	}
+	if s == "" {
+		return nil
+	}
+	t, err := time.Parse(RFC3339, s)
+	if err != nil {
+		return err
+	}
+	*jt = JSONRFC3339(t)
 	return nil
 }
 

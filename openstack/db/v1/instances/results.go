@@ -18,6 +18,17 @@ type Volume struct {
 	Used float64
 }
 
+// Fault describes the fault reason in more detail when a database instance has errored
+type Fault struct {
+	// Indicates the time when the fault occured
+	Created time.Time `json:"-"`
+	// A message describing the fault reason
+	Message string
+	// More details about the fault, for example a stack trace. Only filled
+	// in for admin users.
+	Details string
+}
+
 // Flavor represents (virtual) hardware configurations for server resources in a region.
 type Flavor struct {
 	// The flavor's unique identifier.
@@ -61,6 +72,9 @@ type Instance struct {
 	// The build status of the instance.
 	Status string
 
+	// Fault information (only available when the instance has errored)
+	Fault Fault
+
 	// Information about the attached volume of the instance.
 	Volume Volume
 
@@ -68,12 +82,34 @@ type Instance struct {
 	Datastore datastores.DatastorePartial
 }
 
+func (s *Fault) UnmarshalJSON(b []byte) error {
+	type tmp Fault
+	var p *struct {
+		tmp
+		Created string `json:"created"`
+	}
+	err := json.Unmarshal(b, &p)
+	if err != nil {
+		return err
+	}
+	*s = Fault(p.tmp)
+
+	if p.Created != "" {
+		s.Created, err = time.Parse(gophercloud.RFC3339NoZ, p.Created)
+		if err != nil {
+			return err
+		}
+	}
+
+	return err
+}
+
 func (r *Instance) UnmarshalJSON(b []byte) error {
 	type tmp Instance
 	var s struct {
 		tmp
-		Created gophercloud.JSONRFC3339NoZ `json:"created"`
-		Updated gophercloud.JSONRFC3339NoZ `json:"updated"`
+		Created gophercloud.JSONRFC3339 `json:"created"`
+		Updated gophercloud.JSONRFC3339 `json:"updated"`
 	}
 	err := json.Unmarshal(b, &s)
 	if err != nil {
